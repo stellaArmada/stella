@@ -1,0 +1,130 @@
+@charset "utf-8";
+/* CSS Document */
+
+             .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 10px;
+			padding: 1vw;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+            gap: 1vw; /* 해상도에 맞춘 항목 간격 */
+        }
+
+        .time-box {
+            background-color: rgba(51, 51, 51, 0.5); /* 반투명 배경 */
+            border-radius: 10px; /* 라운드 처리 */
+            padding: 10px;
+            color: white;
+            font-size: clamp(16px, 5vw, 40px); /* 해상도에 맞춘 글자 크기 */
+            display: flex;
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+            flex-direction: row;
+            text-align: center;
+        }
+
+        .time-box span {
+            font-size: clamp(12px, 3vw, 20px); /* 'D', 'H', 'M', 'S' 글자 크기 */
+            margin-left: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .timer {
+                gap: 2vw; /* 모바일 화면에서의 간격 조정 */
+            }
+
+            .time-box {
+                padding: 5px;
+                font-size: clamp(14px, 6vw, 30px); /* 모바일에서 글자 크기 조정 */
+            }
+
+            .time-box span {
+                font-size: clamp(10px, 2.5vw, 18px); /* 'D', 'H', 'M', 'S' 크기 모바일 맞춤 */
+            }
+        }
+			
+		    .presale-container {
+            width: 100%;
+            
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+
+        .stats-boxes {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            flex: 1 1 calc(25% - 10px); /* 한 줄에 4개 표시되도록 설정 */
+            background-color: transparent; /* 배경색 없음 */
+            padding: 15px;
+            border: 2px solid white; /* 흰색 외곽선 */
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease; /* 마우스 오버 시 부드러운 전환 */
+            text-align: center;
+        }
+
+        .stat-box:hover {
+            border-color: orange; /* 마우스 오버 시 주황색으로 변경 */
+        }
+
+        .stat-box p {
+            margin: 5px 0;
+            font-size: 0.85rem; /* 작은 글씨 크기 */
+            color: #fff;
+        }
+
+        .stat-box .stat-number {
+            font-size: 1.5rem; /* 큰 숫자 표시 */
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .bar-container {
+            position: relative;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 30px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .bar {
+            background-color: #4CAF50;
+            height: 100%;
+            border-radius: 10px 0 0 10px;
+            width: 0;
+            text-align: right;
+            color: white;
+            padding-right: 10px;
+            box-sizing: border-box;
+        }
+
+        /* 반응형 조정 */
+        @media (max-width: 600px) {
+            .stat-box {
+                flex: 1 1 calc(50% - 10px); /* 모바일에서 2개씩 한 줄에 표시 */
+            }
+
+        
+
+            .bar-container {
+                height: 25px; /* 모바일에 맞춰 바의 높이 줄이기 */
+            }
+        }
+
