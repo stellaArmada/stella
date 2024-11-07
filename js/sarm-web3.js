@@ -102,7 +102,7 @@ const buyTokens = async (nSarm) => {
         const rate = await crowdPrivate.rate();
         const nWei = nSarm * 1e18 / Number(rate);
         console.log("nWei", nWei);
-        const tx = await crowdPrivate.buyTokens(myAddress, { value: nWei });
+        const tx = await crowdPrivate.buyTokens(myAddress, { value: BigInt(Number(nWei).toFixed(0)) });
         console.log("Transaction sent:", tx);
         const txRet = await tx.wait();
         console.log("Transaction confirmed:", txRet);
@@ -224,6 +224,7 @@ const getSarmMain = async () => {
             }
             const ok = await buyTokens(buyAmount);
             console.log("ok", ok);
+            getSarmMain();
         }
     });
 
