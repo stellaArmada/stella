@@ -1224,6 +1224,11 @@ ul.minicart .cart-price .new {
 	padding-bottom: 120px;
 }
 
+@media (max-width: 600px) {
+	.game-overview-breadcrumb.breadcrumb-bg{
+		padding-top: 20px;
+	}
+}
 
 /* 5. Slider */
 .slider-bg {
