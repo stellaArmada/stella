@@ -181,13 +181,13 @@
                             </nav>
                             <h2>now SARM sale Price <span id="token-price">0.01</span> BNB</h2>
                             <div class="game-overview-status">
-                                <ul><!-- 민석님 이부분은 숫자 끌어올수 있게 세팅하시면 되요-->
+                                <ul>
                                     <li><span>Total Sale Supply :</span> 10000000</li>
                                     <li><span>Remaining Tokens :</span>1500000</li>
                                     <li><span>Tokens Sold</span>50000</li>
                                 </ul>
                             </div>
-                            <!-- 민석님 이부분은 자동계산되게 되어있습니다.-->
+                       
                             <div class="token-calculator"
                                 style="margin-top: 20px; display: flex; flex-direction: column; align-items: center; border: 1px solid #ddd; padding: 20px; border-radius: 10px; max-width: 600px;">
                                 <label for="token-amount"
@@ -204,7 +204,7 @@
                                 </h1>
                                 <a class="btn btn-style-one" id="get-sarm-now-btn">
                                     Get SAMR now
-                                </a><!-- 민석님 지갑 연결되면서 사질수 있게 버튼에 설정하시면되요-->
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -259,21 +259,21 @@
         <script src="js/main.js"></script>
 
         <script>
-            // 1개 토큰의 가격 (BNB)
+           
             const tokenPrice = 0.01;
 
-            // 토큰 수량 입력 필드와 총 가격 표시 필드 가져오기
+        
             const tokenAmountInput = document.getElementById('token-amount');
             const totalPriceSpan = document.getElementById('total-price');
 
-            // 토큰 수량 입력 시 총 가격 계산 함수
+        
             tokenAmountInput.addEventListener('input', function () {
                 const amount = parseFloat(tokenAmountInput.value);
                 if (!isNaN(amount) && amount >= 0) {
-                    const totalPrice = (amount * tokenPrice).toFixed(4); // 소수점 4자리까지 표시
+                    const totalPrice = (amount * tokenPrice).toFixed(4); 
                     totalPriceSpan.textContent = totalPrice;
                 } else {
-                    totalPriceSpan.textContent = '0.00'; // 잘못된 입력 시 0.00 표시
+                    totalPriceSpan.textContent = '0.00';
                 }
             });
         </script>
