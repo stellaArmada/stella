@@ -170,7 +170,7 @@ const web3Main = () => {
     });
 
     updatePresaleStatusUsingContract();
-    connectToMetamask();
+    // connectToMetamask();
 }
 
 const getSarmMain = async () => {
