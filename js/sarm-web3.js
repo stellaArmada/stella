@@ -107,7 +107,6 @@ const buyTokens = async (nSarm) => {
         const txRet = await tx.wait();
         console.log("Transaction confirmed:", txRet);
         alert("Transaction successful!");
-        updatePresaleStatusUsingContract();
     } catch (error) {
         console.error("Error calling contract function:", error);
     }
