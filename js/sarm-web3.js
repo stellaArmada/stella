@@ -1,6 +1,14 @@
-const CROWDSALE_ADDRESS = "0x96DA27a21057B93Ef804Ec8c1F81941A38842089"
-const TOKEN_ADDRESS = "0xc5Bf49e4022203aaf8c78b25BBb97553bDfB8519"
-const PROVIDER_URL = "https://tart.defimix.io" // Tart 테스트넷 Provider
+// Tart Testnet
+// const CROWDSALE_ADDRESS = "0x96DA27a21057B93Ef804Ec8c1F81941A38842089"
+// const TOKEN_ADDRESS = "0xc5Bf49e4022203aaf8c78b25BBb97553bDfB8519"
+// const PROVIDER_URL = "https://tart.defimix.io" // Tart Provider
+// const TARGET_CHAIN_ID = 31338; // Tart Testnet
+
+// BSC Mainnet 
+const CROWDSALE_ADDRESS = "0x3624FEa85BCED3f7C5926B6f9d766B3BBCC067c6"
+const TOKEN_ADDRESS = "0x95eda7e54220c6ebf5a8a0d40672849ff029ca6e"
+const PROVIDER_URL = "https://bsc.blockpi.network/v1/rpc/public"
+const TARGET_CHAIN_ID = 56;
 
 const connectToMetamask = async () => {
     if (window.ethereum) {
@@ -9,7 +17,16 @@ const connectToMetamask = async () => {
             await ethereum.request({ method: 'eth_requestAccounts' });
             signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
             console.log("signer", signer);
-            alert('Metamask connected!');
+            // alert('Metamask connected!');
+            console.log("networkId", await signer.getChainId());
+            if (await signer.getChainId() != TARGET_CHAIN_ID) {
+                try {
+                    await ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: ethers.utils.hexValue(TARGET_CHAIN_ID) }] });
+                } catch (e) {
+                    alert('Please connect to Binance Smart Chain Mainnet!');
+                    return;
+                }
+            };
             // modify Connect Wallet button text only
             document.getElementById("connect-wallet-btn-text").textContent = "Connected";
         } catch (error) {
@@ -44,7 +61,7 @@ const callContractFunction = async () => {
     }
 }
 
-const web3Main = ()=>{
+const web3Main = () => {
     let provider;
     let signer;
     let crowdsaleContract;
@@ -81,7 +98,7 @@ const web3Main = ()=>{
         // Token Price
         const rate = await crowdsaleContract.rate();
         const rateNumber = Number(rate);
-        document.getElementById("token-price").textContent = Number(1 / rate).toLocaleString();
+        document.getElementById("token-price").textContent = `${Number(rate).toLocaleString()}`;
 
         // Token Decimals
         const decimals = await tokenContract.decimals();
@@ -116,7 +133,7 @@ const web3Main = ()=>{
     connectToMetamask();
 }
 
-const getSarmMain = async ()=>{
+const getSarmMain = async () => {
     console.log("Hello Get Sarm");
 
     document.addEventListener("click", function (e) {
