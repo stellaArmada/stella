@@ -169,7 +169,7 @@
                                     </div>
                                 </div>
                                 <!--Timer END-->
-                                <!-- 상단의 박스들 -->
+                                
                                 <div class="stats-boxes">
                                     <div class="stat-box">
                                         <p>Token Price (BNB)</p>
@@ -189,7 +189,7 @@
                                     </div>
                                 </div>
 
-                                <!-- 퍼센트 바 -->
+                                
                                 <div class="bar-container">
                                     <div class="bar" id="progress-bar">0%</div>
                                 </div>
@@ -677,47 +677,46 @@
     <script src="js/main.js"></script>
     <script src="js/sarm-web3.js"></script>
 
-    <!--여기가 카운트다운JS 입니다-->
+   
     <script>
 
-        const targetDate = new Date("2024-12-31T23:59:59").getTime()//여기 날짜 바꾸면 자동계산 됩니다.
+        const targetDate = new Date("2024-12-31T23:59:59").getTime()
 
         function startCountdown() {
             const interval = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
 
-                // 시간 계산
+              
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                // day, hour, min, sec 업데이트
+          
                 document.getElementById("days").textContent = days.toString().padStart(2, '0');
                 document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
                 document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
                 document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
 
-                // span을 다시 추가해 'D', 'H', 'M', 'S' 표시 유지
                 document.getElementById("days").innerHTML += '<span>D</span>';
                 document.getElementById("hours").innerHTML += '<span>H</span>';
                 document.getElementById("minutes").innerHTML += '<span>M</span>';
                 document.getElementById("seconds").innerHTML += '<span>S</span>';
 
-                // 타이머가 종료되면 멈추기
+               
                 if (distance < 0) {
                     clearInterval(interval);
                     document.querySelector('.timer').textContent = "Time's up!";
                 }
-            }, 1000); // 1초마다 실행
+            }, 1000); 
         }
 
-        // 페이지 로드 시 카운트다운 시작
+      
         window.onload = startCountdown;
     </script>
 
-    <!--여기가 토큰 수량정보 계산JS 입니다-->
+   
     <script>
         // Total supply and tokens sold definition
         const totalTokens = 3000000000; // Total supply
