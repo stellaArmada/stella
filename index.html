@@ -11,6 +11,50 @@
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
 
     <!-- CSS here -->
+    <style>
+       
+        .custom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+      
+        .custom-modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 700px;
+            background-color: black;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+       
+        .custom-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+       
+        .custom-modal-content video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
@@ -30,8 +74,30 @@
 </head>
 
 <body>
+<div id="customVideoModal" class="custom-modal-overlay">
+    <div class="custom-modal-content">
+        <button class="custom-close-btn" onclick="closeCustomModal()">✖</button>
+        <!-- Google Drive 비디오 재생 -->
+        <video id="customModalVideo" autoplay muted controls>
+            <source src="https://drive.google.com/uc?export=download&id=1FjuyKdXmFXpL6tgvFxtYJDCPl9M6lh0u" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+<script>
+ 
+    window.onload = function() {
+        document.getElementById('customVideoModal').style.display = 'flex';
+    };
 
-
+ 
+    function closeCustomModal() {
+        const modal = document.getElementById('customVideoModal');
+        const video = document.getElementById('customModalVideo');
+        modal.style.display = 'none';
+        video.pause();
+    }
+</script>
     <div id="preloader">
         <div id="loading-center">
             <div id="loading-center-absolute">
