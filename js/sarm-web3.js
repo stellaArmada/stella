@@ -52,13 +52,13 @@ async function addBSCNetwork() {
             params: [
                 {
                     chainId: '0x38', // BSC Mainnet의 체인 ID (16진수)
-                    chainName: 'Binance Smart Chain',
+                    chainName: 'BNB Chain',
                     nativeCurrency: {
                         name: 'Binance Coin',
                         symbol: 'BNB', // BSC의 native 통화
                         decimals: 18,
                     },
-                    rpcUrls: ['https://bsc-dataseed.binance.org/'], // BSC RPC URL
+                    rpcUrls: ['https://bsc-dataseed1.binance.org/'], // BSC RPC URL
                     blockExplorerUrls: ['https://bscscan.com/'], // BSC 블록 탐색기 URL
                 },
             ],
