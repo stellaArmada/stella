@@ -11,9 +11,9 @@ const PROVIDER_URL = "https://bsc.blockpi.network/v1/rpc/public"
 const TARGET_CHAIN_ID = 56;
 
 const connectToMetamask = async () => {
+    let signer;
     if (window.ethereum) {
         try {
-            // Metamask 연결 요청
             await ethereum.request({ method: 'eth_requestAccounts' });
             signer = new ethers.providers.Web3Provider(window.ethereum).getSigner();
             console.log("signer", signer);
@@ -35,33 +35,11 @@ const connectToMetamask = async () => {
     } else {
         alert('Metamask not found!');
     }
+
+    return signer;
 }
 
-const callContractFunction = async () => {
-    if (!signer) {
-        alert('Please connect to Metamask first!');
-        return;
-    }
-    try {
-        // 컨트랙트에 Token 구입 함수 호출
-        const crowdPrivate = crowdsaleContract.connect(signer);
-        const myAddress = await signer.getAddress();
-        console.log("myAddress", myAddress);
-        const rate = await crowdPrivate.rate();
-        const nSarm = 1; // 이 부분은 화면에서 입력받아야 함
-        const nWei = 1e18 / Number(rate);
-        const tx = await crowdPrivate.buyTokens(myAddress, { value: nWei });
-        console.log("Transaction sent:", tx);
-        const txRet = await tx.wait();
-        console.log("Transaction confirmed:", txRet);
-        alert("Transaction successful!");
-        updatePresaleStatusUsingContract();
-    } catch (error) {
-        console.error("Error calling contract function:", error);
-    }
-}
-
-const getCrowdSaleRate = async ()=>{
+const getCrowdSaleRate = async () => {
     const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
     const crowdRet = await fetch('./abi/Crowdsale.json');
     const crowdAbi = await crowdRet.json();
@@ -72,7 +50,7 @@ const getCrowdSaleRate = async ()=>{
     return rate;
 }
 
-const getCrowdSaleWeiRaised = async ()=>{
+const getCrowdSaleWeiRaised = async () => {
     const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
     const crowdRet = await fetch('./abi/Crowdsale.json');
     const crowdAbi = await crowdRet.json();
@@ -83,7 +61,7 @@ const getCrowdSaleWeiRaised = async ()=>{
     return weiRaised;
 }
 
-const getTokenBalanceOfCrowdSale = async ()=>{
+const getTokenBalanceOfCrowdSale = async () => {
     const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
     const erc20Ret = await fetch('./abi/SarmToken.json');
     const erc20Abi = await erc20Ret.json();
@@ -95,7 +73,7 @@ const getTokenBalanceOfCrowdSale = async ()=>{
     return tokenBalanceHuman;
 }
 
-const getTokenDecimals = async ()=>{
+const getTokenDecimals = async () => {
     const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
     const erc20Ret = await fetch('./abi/SarmToken.json');
     const erc20Abi = await erc20Ret.json();
@@ -106,10 +84,33 @@ const getTokenDecimals = async ()=>{
     return decimals;
 }
 
-const calculateTokenSold = async (weiRaised, rate, decimals)=>{
+const calculateTokenSold = async (weiRaised, rate, decimals) => {
     const tokenSold = Number(weiRaised) * Number(rate) / 10 ** Number(decimals);
     console.log("tokenSold", tokenSold);
     return tokenSold;
+}
+
+const buyTokens = async (nSarm) => {
+    try {
+        const signer = await connectToMetamask();
+        const crowdRet = await fetch('./abi/Crowdsale.json');
+        const crowdAbi = await crowdRet.json();
+        console.log("crowdAbi", crowdAbi);
+        const crowdPrivate = new ethers.Contract(CROWDSALE_ADDRESS, crowdAbi, signer);
+        const myAddress = await signer.getAddress();
+        console.log("myAddress", myAddress);
+        const rate = await crowdPrivate.rate();
+        const nWei = nSarm * 1e18 / Number(rate);
+        console.log("nWei", nWei);
+        const tx = await crowdPrivate.buyTokens(myAddress, { value: nWei });
+        console.log("Transaction sent:", tx);
+        const txRet = await tx.wait();
+        console.log("Transaction confirmed:", txRet);
+        alert("Transaction successful!");
+        updatePresaleStatusUsingContract();
+    } catch (error) {
+        console.error("Error calling contract function:", error);
+    }
 }
 
 const web3Main = () => {
@@ -119,7 +120,6 @@ const web3Main = () => {
     let tokenContract;
     let rate;
 
-    // 화면에 표시할 정보를 가져오는 함수
     const updatePresaleStatusUsingContract = async () => {
         // Provider
         provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
@@ -161,7 +161,7 @@ const web3Main = () => {
         if (e.target.id == "connect-wallet-btn") {
             connectToMetamask();
         } else if (e.target.id == "get-sarm") {
-            // callContractFunction();
+            // buyToken();
         }
     });
 
@@ -171,6 +171,13 @@ const web3Main = () => {
 
 const getSarmMain = async () => {
     console.log("Hello Get Sarm");
+    const tokenAmountInput = document.getElementById('token-amount');
+    const getButton = document.getElementById('get-sarm-now-btn');
+
+    // disable
+    tokenAmountInput.disabled = true;
+    getButton.disabled = true;
+
     const rate = await getCrowdSaleRate();
     const weiRaised = await getCrowdSaleWeiRaised();
     const tokenSold = await calculateTokenSold(weiRaised, rate, 18);
@@ -178,7 +185,6 @@ const getSarmMain = async () => {
     const totalSupply = Number(tokenSold) + Number(tokenRemain);
 
     const totalSupplySpan = document.getElementById('total-sale-supply');
-    const tokenAmountInput = document.getElementById('token-amount');
     const totalPriceSpan = document.getElementById('token-price');
     const remainingTokensSpan = document.getElementById('remaining-tokens');
     const tokenSoldSpan = document.getElementById('tokens-sold');
@@ -187,14 +193,37 @@ const getSarmMain = async () => {
     totalSupplySpan.textContent = Number(totalSupply).toLocaleString();
     remainingTokensSpan.textContent = Number(tokenRemain).toLocaleString();
     tokenSoldSpan.textContent = Number(tokenSold).toLocaleString();
-    
-    document.addEventListener("click", function (e) {
+
+    //enable
+    tokenAmountInput.disabled = false;
+    getButton.disabled = false;
+    const bnbAmountSpan = document.getElementById('bnb-buy-amount');
+    // on input change
+    tokenAmountInput.addEventListener('input', (e) => {
+        const tokenAmount = e.target.value;
+        const bnbAmount = tokenAmount / rate;
+        bnbAmountSpan.textContent = Number(bnbAmount).toLocaleString(undefined, { minimumFractionDigits: 7 });
+    });
+
+    document.addEventListener("click", async function (e) {
         if (e.target.id == "connect-wallet-btn") {
             connectToMetamask();
         } else if (e.target.id == "get-sarm-now-btn") {
-            // callContractFunction();
+            // buyToken();
             console.log("get-sarm-now-btn clicked");
-            connectToMetamask();
+            const signer = await connectToMetamask();
+            if (!signer) {
+                alert('Please connect to Metamask first!');
+                return;
+            }
+            const buyAmount = tokenAmountInput.value;
+            console.log("buyAmount", buyAmount);
+            if (buyAmount <= 0) {
+                alert('Please enter a valid amount!');
+                return;
+            }
+            const ok = await buyTokens(buyAmount);
+            console.log("ok", ok);
         }
     });
 
