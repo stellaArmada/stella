@@ -179,12 +179,21 @@
                                     <li class="breadcrumb-item active" aria-current="page">Get SARM</li>
                                 </ol>
                             </nav>
-                            <h2>now SARM sale Price <span id="token-price">0.01</span> BNB</h2>
+                            <h2>now SARM sale Price <span id="token-price">...</span> SARM/BNB</h2>
                             <div class="game-overview-status">
                                 <ul>
-                                    <li><span>Total Sale Supply :</span> 10000000</li>
-                                    <li><span>Remaining Tokens :</span>1500000</li>
-                                    <li><span>Tokens Sold</span>50000</li>
+                                    <li>
+                                        <span>Total Sale Supply :</span>
+                                        <span id="total-sale-supply">...</span>
+                                    </li>
+                                    <li>
+                                        <span>Remaining Tokens :</span>
+                                        <span id="remaining-tokens">...</span>
+                                    </li>
+                                    <li>
+                                        <span>Tokens Sold</span>
+                                        <span id="tokens-sold">...</span>
+                                    </li>
                                 </ul>
                             </div>
                        
@@ -260,22 +269,22 @@
 
         <script>
            
-            const tokenPrice = 0.01;
+            // const tokenPrice = 0.01;
 
         
-            const tokenAmountInput = document.getElementById('token-amount');
-            const totalPriceSpan = document.getElementById('total-price');
+            // const tokenAmountInput = document.getElementById('token-amount');
+            // const totalPriceSpan = document.getElementById('total-price');
 
         
-            tokenAmountInput.addEventListener('input', function () {
-                const amount = parseFloat(tokenAmountInput.value);
-                if (!isNaN(amount) && amount >= 0) {
-                    const totalPrice = (amount * tokenPrice).toFixed(4); 
-                    totalPriceSpan.textContent = totalPrice;
-                } else {
-                    totalPriceSpan.textContent = '0.00';
-                }
-            });
+            // tokenAmountInput.addEventListener('input', function () {
+            //     const amount = parseFloat(tokenAmountInput.value);
+            //     if (!isNaN(amount) && amount >= 0) {
+            //         const totalPrice = (amount * tokenPrice).toFixed(4); 
+            //         totalPriceSpan.textContent = totalPrice;
+            //     } else {
+            //         totalPriceSpan.textContent = '0.00';
+            //     }
+            // });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
         <script>

@@ -61,6 +61,57 @@ const callContractFunction = async () => {
     }
 }
 
+const getCrowdSaleRate = async ()=>{
+    const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
+    const crowdRet = await fetch('./abi/Crowdsale.json');
+    const crowdAbi = await crowdRet.json();
+    console.log("crowdAbi", crowdAbi);
+    const crowdsaleContract = new ethers.Contract(CROWDSALE_ADDRESS, crowdAbi, provider);
+    const rate = await crowdsaleContract.rate();
+    console.log("rate", rate);
+    return rate;
+}
+
+const getCrowdSaleWeiRaised = async ()=>{
+    const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
+    const crowdRet = await fetch('./abi/Crowdsale.json');
+    const crowdAbi = await crowdRet.json();
+    console.log("crowdAbi", crowdAbi);
+    const crowdsaleContract = new ethers.Contract(CROWDSALE_ADDRESS, crowdAbi, provider);
+    const weiRaised = await crowdsaleContract.weiRaised();
+    console.log("weiRaised", weiRaised);
+    return weiRaised;
+}
+
+const getTokenBalanceOfCrowdSale = async ()=>{
+    const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
+    const erc20Ret = await fetch('./abi/SarmToken.json');
+    const erc20Abi = await erc20Ret.json();
+    console.log("erc20Abi", erc20Abi);
+    const tokenContract = new ethers.Contract(TOKEN_ADDRESS, erc20Abi, provider);
+    const tokenBalance = await tokenContract.balanceOf(CROWDSALE_ADDRESS);
+    const tokenBalanceHuman = Number(ethers.utils.formatEther(tokenBalance)).toFixed(2);
+    console.log("token balance in crowdsale", tokenBalanceHuman);
+    return tokenBalanceHuman;
+}
+
+const getTokenDecimals = async ()=>{
+    const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
+    const erc20Ret = await fetch('./abi/SarmToken.json');
+    const erc20Abi = await erc20Ret.json();
+    console.log("erc20Abi", erc20Abi);
+    const tokenContract = new ethers.Contract(TOKEN_ADDRESS, erc20Abi, provider);
+    const decimals = await tokenContract.decimals();
+    console.log("decimals", decimals);
+    return decimals;
+}
+
+const calculateTokenSold = async (weiRaised, rate, decimals)=>{
+    const tokenSold = Number(weiRaised) * Number(rate) / 10 ** Number(decimals);
+    console.log("tokenSold", tokenSold);
+    return tokenSold;
+}
+
 const web3Main = () => {
     let provider;
     let signer;
@@ -73,21 +124,8 @@ const web3Main = () => {
         // Provider
         provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
 
-        // ERC20 Contract
-        const erc20Ret = await fetch('./abi/SarmToken.json');
-        const erc20Abi = await erc20Ret.json();
-        console.log("erc20Abi", erc20Abi);
-        tokenContract = new ethers.Contract(TOKEN_ADDRESS, erc20Abi, provider);
-
-        // Crowdsale Contract
-        const crowdRet = await fetch('./abi/Crowdsale.json');
-        const crowdAbi = await crowdRet.json();
-        console.log("crowdAbi", crowdAbi);
-        crowdsaleContract = new ethers.Contract(CROWDSALE_ADDRESS, crowdAbi, provider);
-
         // Remaining Tokens
-        const tokenBalance = await tokenContract.balanceOf(CROWDSALE_ADDRESS);
-        const tokenBalanceHuman = Number(ethers.utils.formatEther(tokenBalance)).toFixed(2);
+        const tokenBalanceHuman = await getTokenBalanceOfCrowdSale();
         console.log("token balance in crowdsale", tokenBalanceHuman);
         document.getElementById("remaining-tokens").textContent = Number(tokenBalanceHuman).toLocaleString();
 
@@ -96,19 +134,17 @@ const web3Main = () => {
         // const totalSupplyHuman = ethers.utils.formatEther(totalSupply);
 
         // Token Price
-        const rate = await crowdsaleContract.rate();
+        rate = await getCrowdSaleRate();
         const rateNumber = Number(rate);
         document.getElementById("token-price").textContent = `${Number(rate).toLocaleString()}`;
 
         // Token Decimals
-        const decimals = await tokenContract.decimals();
-        console.log("decimals", decimals);
-        const weiRaised = await crowdsaleContract.weiRaised();
+        const decimals = await getTokenDecimals();
+        const weiRaised = await getCrowdSaleWeiRaised();
         console.log("weiRaised", weiRaised);
-        const tokenSold = Number(weiRaised) * rateNumber / 10 ** decimals;
+        const tokenSold = await calculateTokenSold(weiRaised, rate, decimals);
         console.log("tokenSold", tokenSold);
         document.getElementById("sold-tokens").textContent = Number(tokenSold).toLocaleString();
-
 
         // Progress
         const totalCrowded = Number(tokenBalanceHuman) + Number(tokenSold);
@@ -135,7 +171,23 @@ const web3Main = () => {
 
 const getSarmMain = async () => {
     console.log("Hello Get Sarm");
+    const rate = await getCrowdSaleRate();
+    const weiRaised = await getCrowdSaleWeiRaised();
+    const tokenSold = await calculateTokenSold(weiRaised, rate, 18);
+    const tokenRemain = await getTokenBalanceOfCrowdSale();
+    const totalSupply = Number(tokenSold) + Number(tokenRemain);
 
+    const totalSupplySpan = document.getElementById('total-sale-supply');
+    const tokenAmountInput = document.getElementById('token-amount');
+    const totalPriceSpan = document.getElementById('token-price');
+    const remainingTokensSpan = document.getElementById('remaining-tokens');
+    const tokenSoldSpan = document.getElementById('tokens-sold');
+
+    totalPriceSpan.textContent = Number(rate).toLocaleString();
+    totalSupplySpan.textContent = Number(totalSupply).toLocaleString();
+    remainingTokensSpan.textContent = Number(tokenRemain).toLocaleString();
+    tokenSoldSpan.textContent = Number(tokenSold).toLocaleString();
+    
     document.addEventListener("click", function (e) {
         if (e.target.id == "connect-wallet-btn") {
             connectToMetamask();
