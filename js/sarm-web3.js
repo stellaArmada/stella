@@ -39,6 +39,11 @@ const connectToMetamask = async () => {
     return signer;
 }
 
+function redirectToMetaMask() {
+    const deeplink = 'https://metamask.app.link/dapp/www.stella-armada.xyz';
+    window.location.href = deeplink;
+}
+
 const getCrowdSaleRate = async () => {
     const provider = new ethers.providers.JsonRpcProvider(PROVIDER_URL);
     const crowdRet = await fetch('./abi/Crowdsale.json');
