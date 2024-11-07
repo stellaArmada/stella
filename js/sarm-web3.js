@@ -33,7 +33,7 @@ const connectToMetamask = async () => {
             console.error(error);
         }
     } else {
-        alert('Metamask not found!');
+        redirectToMetaMask();
     }
 
     return signer;
