@@ -12,47 +12,18 @@
 
     <!-- CSS here -->
     <style>
-       
-        .custom-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-      
-        .custom-modal-content {
-            position: relative;
-            width: 80%;
-            max-width: 700px;
-            background-color: black;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-       
-        .custom-close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
+        .watch-video-btn {
+            padding: 10px 20px;
+            font-size: 11px;
+            background-color: #4CAF50;
             color: white;
-            background: none;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
 
-       
-        .custom-modal-content video {
-            width: 100%;
-            height: auto;
-            display: block;
+        .watch-video-btn:hover {
+            background-color: #45a049;
         }
     </style>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -68,36 +39,14 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/other.css">
-<script>
- 
-    window.onload = function() {
-        document.getElementById('customVideoModal').style.display = 'flex';
-    };
 
- 
-    function closeCustomModal() {
-        const modal = document.getElementById('customVideoModal');
-        const video = document.getElementById('customModalVideo');
-        modal.style.display = 'none';
-        video.pause();
-    }
-</script>
     <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
 
 </head>
 
 <body>
 
-    <div id="customVideoModal" class="custom-modal-overlay">
-    <div class="custom-modal-content">
-        <button class="custom-close-btn" onclick="closeCustomModal()">✖</button>
-     
-        <video id="customModalVideo" autoplay muted controls>
-            <source src="SARM Teaser_2.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-</div>
+    
 
     <div id="preloader">
         <div id="loading-center">
@@ -106,7 +55,8 @@
             </div>
         </div>
     </div>
-
+	
+	
     <header class="third-header-bg">
         <div class="bg"></div>
         <div class="container custom-container">
@@ -119,7 +69,7 @@
                                 <li><a href="https://x.com/Stella_Armada_official"><i class="fab fa-twitter"></i></a></li>
                                 <li><a href="https://t.me/sarm_official"><i class="fab fa-telegram"></i></a></li>
                                 <li><a href="https://stella-armada.gitbook.io/stella-armada/sarm-tokenomics/sarm-basic-info"><i class="fab fa-github"></i></a></li>
-                                
+                                <li><button class="watch-video-btn" onclick="openVideo()"><i class="fa fa-video"></i></button></li>
                             </ul>
                         </div>
                     </div>
@@ -743,7 +693,47 @@
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
     <script src="js/sarm-web3.js"></script>
+<script>
+    // 새 창에서 비디오 열기
+    function openVideo() {
+        // 새 창에서 비디오를 재생할 HTML 구조
+        const videoHtml = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Video Playback</title>
+                <style>
+                    body {
+                        margin: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        background-color: #000;
+                    }
+                    video {
+                        width: 80%;
+                        height: auto;
+                    }
+                </style>
+            </head>
+            <body>
+                <video controls autoplay>
+                    <source src="SARM Teaser_2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </body>
+            </html>
+        `;
 
+        // 새 창 열기 및 HTML 삽입
+        const videoWindow = window.open("", "_blank", "width=800,height=600");
+        videoWindow.document.write(videoHtml);
+        videoWindow.document.close(); // 문서 로딩 완료
+    }
+</script>
    
     <script>
 
