@@ -75,10 +75,8 @@ const web3Main = ()=>{
         document.getElementById("remaining-tokens").textContent = Number(tokenBalanceHuman).toLocaleString();
 
         // Total Supply
-        const totalSupply = await tokenContract.totalSupply();
-        const totalSupplyHuman = ethers.utils.formatEther(totalSupply);
-        console.log("totalSupply", totalSupplyHuman);
-        document.getElementById("total-tokens").textContent = Number(totalSupplyHuman).toLocaleString();
+        // const totalSupply = await tokenContract.totalSupply();
+        // const totalSupplyHuman = ethers.utils.formatEther(totalSupply);
 
         // Token Price
         const rate = await crowdsaleContract.rate();
@@ -94,12 +92,16 @@ const web3Main = ()=>{
         console.log("tokenSold", tokenSold);
         document.getElementById("sold-tokens").textContent = Number(tokenSold).toLocaleString();
 
+
         // Progress
         const totalCrowded = Number(tokenBalanceHuman) + Number(tokenSold);
         const soldPercentage = (tokenSold / totalCrowded) * 100;
         const progressBar = document.getElementById("progress-bar");
         progressBar.style.width = soldPercentage + "%";
         progressBar.textContent = Math.round(soldPercentage) + "%";
+
+        // Total Crowdsale
+        document.getElementById("total-tokens").textContent = Number(totalCrowded).toLocaleString();
     }
 
     document.addEventListener("click", function (e) {
