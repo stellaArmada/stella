@@ -23,7 +23,8 @@ const connectToMetamask = async () => {
                 try {
                     await ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: ethers.utils.hexValue(TARGET_CHAIN_ID) }] });
                 } catch (e) {
-                    alert('Please connect to Binance Smart Chain Mainnet!');
+                    // alert('Please connect to Binance Smart Chain Mainnet!');
+                    addBSCNetwork();
                     return;
                 }
             };
@@ -42,6 +43,30 @@ const connectToMetamask = async () => {
 function redirectToMetaMask() {
     const deeplink = 'https://metamask.app.link/dapp/www.stella-armada.xyz';
     window.location.href = deeplink;
+}
+
+async function addBSCNetwork() {
+    try {
+        await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+                {
+                    chainId: '0x38', // BSC Mainnet의 체인 ID (16진수)
+                    chainName: 'Binance Smart Chain',
+                    nativeCurrency: {
+                        name: 'Binance Coin',
+                        symbol: 'BNB', // BSC의 native 통화
+                        decimals: 18,
+                    },
+                    rpcUrls: ['https://bsc-dataseed.binance.org/'], // BSC RPC URL
+                    blockExplorerUrls: ['https://bscscan.com/'], // BSC 블록 탐색기 URL
+                },
+            ],
+        });
+        console.log('BSC Network added successfully');
+    } catch (error) {
+        console.error('Failed to add BSC Network', error);
+    }
 }
 
 const getCrowdSaleRate = async () => {
