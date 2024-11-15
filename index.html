@@ -720,9 +720,9 @@
     <script src="js/main.js"></script>
     <script src="js/sarm-web3.js"></script>
 <script>
-    // 새 창에서 비디오 열기
+    
     function openVideo() {
-        // 새 창에서 비디오를 재생할 HTML 구조
+       
         const videoHtml = `
             <!DOCTYPE html>
             <html lang="en">
@@ -754,10 +754,10 @@
             </html>
         `;
 
-        // 새 창 열기 및 HTML 삽입
+       
         const videoWindow = window.open("", "_blank", "width=800,height=600");
         videoWindow.document.write(videoHtml);
-        videoWindow.document.close(); // 문서 로딩 완료
+        videoWindow.document.close(); 
     }
 </script>
    
