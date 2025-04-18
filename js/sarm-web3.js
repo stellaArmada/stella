@@ -7,7 +7,7 @@
 // BSC Mainnet 
 const CROWDSALE_ADDRESS = "0x3624FEa85BCED3f7C5926B6f9d766B3BBCC067c6"
 const TOKEN_ADDRESS = "0x95eda7e54220c6ebf5a8a0d40672849ff029ca6e"
-const PROVIDER_URL = "https://bsc.blockpi.network/v1/rpc/public"
+const PROVIDER_URL = "https://bsc-dataseed1.binance.org/"
 const TARGET_CHAIN_ID = 56;
 
 const connectToMetamask = async () => {
